@@ -6,9 +6,9 @@ function App() {
   const url = "https://northwind.vercel.app/api/suppliers/";
   const [data, setdata] = useState([]);
   const [newdata, setnewdata] = useState({
-    contactName:"",
-    contactTitle:"",
-    companyName:""
+    contactName: "",
+    contactTitle: "",
+    companyName: ""
   });
 
   async function getAllData() {
@@ -21,7 +21,7 @@ function App() {
   }
   async function deleteData(id) {
     try {
-      let datas = await axios.delete(url+id);
+      let datas = await axios.delete(url + id);
       console.log(id);
       getAllData()
     } catch (error) {
@@ -37,9 +37,9 @@ function App() {
   async function addData(e) {
     e.preventDefault();
     try {
-      let datas = await axios.post(url,newdata);
-      setnewdata(datas.data);
-      console.log(newdata);
+      await axios.post(url, newdata);
+      setnewdata({ contactName: "", contactTitle: "", companyName: "" });
+      getAllData();
     } catch (error) {
       console.error(error);
     }
@@ -47,12 +47,29 @@ function App() {
 
   return (
     <>
-    <form onSubmit={()=>addData()}>
-      <input onChange={(e) => setnewdata({ ...newdata, contactName: e.target.value })} type="text" placeholder="Write Contact Name:"/>
-      <input onChange={(e) => setnewdata({ ...newdata, contactTitle: e.target.value })} type="text" placeholder="Write Contact Title:"/>
-      <input onChange={(e) => setnewdata({ ...newdata, companyName: e.target.value })} type="text" placeholder="Write Company Name:"/>
-      <button className="sendBtn">Send</button>
-    </form>
+      <form onSubmit={addData}>
+        <input
+          value={newdata.contactName}
+          onChange={(e) => setnewdata({ ...newdata, contactName: e.target.value })}
+          type="text"
+          placeholder="Write Contact Name:"
+        />
+
+        <input
+          value={newdata.contactTitle}
+          onChange={(e) => setnewdata({ ...newdata, contactTitle: e.target.value })}
+          type="text"
+          placeholder="Write Contact Title:"
+        />
+
+        <input
+          value={newdata.companyName}
+          onChange={(e) => setnewdata({ ...newdata, companyName: e.target.value })}
+          type="text"
+          placeholder="Write Company Name:"
+        />
+        <button className="sendBtn">Send</button>
+      </form>
       <table>
         <thead>
           <tr>
